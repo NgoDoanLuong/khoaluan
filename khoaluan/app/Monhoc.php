@@ -13,7 +13,7 @@ class Monhoc extends Model
       return $this->belongsTo('App\Hocky');
     }
 
-    public function diem(){
+    public function diems(){
       return $this->hasMany('App\Diem');
     }
 }

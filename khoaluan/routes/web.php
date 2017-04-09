@@ -25,7 +25,15 @@ Route::group(['prefix'=>'admin'],function(){
     });
     Route::group(['prefix'=>'monhoc'],function (){
       Route::get('/',['as'=>'monhoc.list','uses'=>'MonhocController@show']);
+
       Route::post('create',['as'=>'monhoc.create','uses'=>'MonhocController@create']);
       Route::post('create/excel',['as'=>'monhoc.excel','uses'=>'MonhocController@createFromExcel']);
+
+      Route::get('{id}/delete',['as'=>'monhoc.delete','uses'=>'MonhocController@deleteMH']);
+
+      Route::get('{id}/edit',['as'=>'monhoc.getEdit','uses'=>'MonhocController@showEdit']);
+      Route::post('{id}/edit',['as'=>'monhoc.edit','uses'=>'MonhocController@postEdit']);
     });
 });
+
+Route::get('/test','MonhocController@test');

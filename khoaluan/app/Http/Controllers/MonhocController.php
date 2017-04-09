@@ -11,8 +11,9 @@ class MonhocController extends Controller
 {
     //
     public function show(){
+      $monhoc=Monhoc::all();
       $hocky=Hocky::all();
-      return view('admin.monhoc.list',compact('hocky'));
+      return view('admin.monhoc.list',compact('hocky','monhoc'));
     }
 
     public function create(Request $request){
@@ -29,7 +30,7 @@ class MonhocController extends Controller
       $monhoc->tenmon=$request->tenmon;
       $monhoc->hocky_id=$request->hocky_id;
       $monhoc->save();
-      echo "them mon hoc thanh cong".$request->hocky_id;
+      return redirect()->back();
     }
 
     public function createFromExcel(Request $request){
@@ -62,4 +63,37 @@ class MonhocController extends Controller
         }
       }
     }
+
+    //Xoa mon Mon hoc
+    public function deleteMH($id){
+        $DIEM=Monhoc::find($id)->diems;
+        foreach($DIEM as $value){
+          $value->delete();
+        }
+        Monhoc::find($id)->delete();
+        return redirect()->back();
+    }
+    //Hien thi trang edit
+    public function showEdit($id){
+        $monhoc=Monhoc::find($id);
+        $hocky=Hocky::select('id','tenhocky')->where('id',$monhoc->hocky_id)->first();
+        return view('admin.monhoc.edit',compact('hocky','monhoc'));
+    }
+    //Post mon hoc sau khi edit
+    public function postEdit(Request $request,$id){
+      $monhoc= Monhoc::find($id);
+      $tatmonhoc=Monhoc::where('hocky_id',$monhoc->hocky_id)->get();
+      foreach($tatmonhoc as $mon){
+        if($mon->mamon==$request->mamon && $mon->magv==$request->magv){
+          echo "da ton tai";
+          return ;
+        }
+      }
+      $monhoc->mamon=$request->mamon;
+      $monhoc->magv=$request->magv;
+      $monhoc->tenmon=$request->tenmon;
+      $monhoc->save();
+      return redirect()->route('monhoc.list');
+    }
+
 }

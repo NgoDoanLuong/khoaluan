@@ -24,5 +24,31 @@
         <button type="submit">Import</button>
       </select>
     </form>
+    <table>
+        <tr>
+            <th>Hoc ki</th>
+            <th>Ma mon</th>
+            <th>Ma giang vien</th>
+            <th>Ten mon hoc</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr>
+          @foreach($hocky as $hk)
+            @foreach($monhoc as $mon)
+              <tr>
+              @if($hk->id == $mon->hocky_id)
+                <td>{{$hk->tenhocky}}</td>
+                <td>{{$mon->mamon}}</td>
+                <td>{{$mon->magv}}</td>
+                <td>{{$mon->tenmon}}</td>
+                <td><a href="monhoc/{{$mon->id}}/edit">Edit</a></td>
+                <td><a href="monhoc/{{$mon->id}}/delete">Delete</a></td>
+              @endif
+              </tr>
+            @endforeach
+          @endforeach
+        </tr>
+    </table>
   </body>
 </html>
